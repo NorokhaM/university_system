@@ -10,6 +10,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
+<%
+    if (session != null) {
+        String role = (String) session.getAttribute("role");
+        if (role != null) {
+            if (role.equals("Student")) {
+                response.sendRedirect("student.jsp");
+            } else if (role.equals("Teacher")) {
+                response.sendRedirect("teacher.jsp");
+            }
+        }
+
+    }
+%>
 <body>
 <div class="container">
 <form class="w-50 mx-auto mt-3 p-5" action="login" method="post">
@@ -17,7 +30,7 @@
     <h4 class="text-center">Sign in</h4>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
