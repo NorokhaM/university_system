@@ -35,6 +35,5 @@
         </div>
     </form>
 </div>
-<section class="hero-section"></section>
 </body>
 </html>
