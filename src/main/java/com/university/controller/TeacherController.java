@@ -2,10 +2,14 @@ package com.university.controller;
 
 import com.university.dao.TeacherDao;
 import com.university.db.DBDriver;
+import com.university.entity.Student;
 import com.university.entity.Teacher;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherController implements TeacherDao {
     private static final String INSERT_QUERY = "INSERT INTO teachers (firstName, lastName, address, email, phone, age, subject) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -62,5 +66,31 @@ public class TeacherController implements TeacherDao {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public List<Teacher> getTeacherByEmail(HttpServletRequest request){
+        List<Teacher> teachers = new ArrayList<>();
+        HttpSession session = request.getSession(false);
+        try(Connection connection = DBDriver.getInstance().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+            preparedStatement.setString(1, session.getAttribute("email").toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Teacher teacher = Teacher.getInstance();
+                teacher.setTeacherFirstName(resultSet.getString("firstName"))
+                        .setTeacherLastName(resultSet.getString("lastName"))
+                        .setTeacherAddress(resultSet.getString("address"))
+                        .setTeacherEmail(resultSet.getString("email"))
+                        .setTeacherAge(resultSet.getInt("age"))
+                        .setTeacherPhone(resultSet.getString("phone"))
+                        .setTeacherSubject(resultSet.getString("subject"));
+                teachers.add(teacher);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return teachers;
     }
 }

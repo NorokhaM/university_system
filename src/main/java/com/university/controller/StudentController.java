@@ -50,7 +50,7 @@ public class StudentController implements StudentDao {
     }
 
     @Override
-    public List<Student> getStudentByName(HttpServletRequest request) {
+    public List<Student> getStudentByEmail(HttpServletRequest request) {
         List<Student> students = new ArrayList<>();
         HttpSession session = request.getSession(false);
         try(Connection connection = DBDriver.getInstance().getConnection()){
