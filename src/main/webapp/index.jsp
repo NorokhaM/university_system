@@ -24,6 +24,7 @@
                 response.sendRedirect("teacher.jsp");
             }
         }
+
     }
 %>
 <body>
