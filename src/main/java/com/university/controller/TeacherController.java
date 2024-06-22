@@ -14,6 +14,7 @@ import java.util.List;
 public class TeacherController implements TeacherDao {
     private static final String INSERT_QUERY = "INSERT INTO teachers (firstName, lastName, address, email, phone, age, subject) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM teachers WHERE email = ?";
+    private static final String UPDATE_QUERY = "UPDATE teachers SET firstName = ?, lastName = ?, address = ?, phone = ?, subject = ?, age = ? WHERE email = ?";
     private static TeacherController instance = null;
 
     public static TeacherController getInstance() {
@@ -131,10 +132,8 @@ public class TeacherController implements TeacherDao {
     }
 
     private void updateTeacherInDatabase(Teacher teacher, HttpServletRequest request) {
-        String query = "UPDATE teachers SET firstName = ?, lastName = ?, address = ?, phone = ?, subject = ?, age=? WHERE email = ?";
-
         try (Connection connection = DBDriver.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, teacher.getFirstName());
             preparedStatement.setString(2, teacher.getLastName());
             preparedStatement.setString(3, teacher.getAddress());

@@ -13,7 +13,7 @@ import java.util.List;
 public class StudentController implements StudentDao {
     private static final String INSERT_QUERY = "INSERT INTO students (firstName, lastName, address, email, age, phone) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM students WHERE email=?";
-
+    private static final String UPDATE_QUERY= "UPDATE students SET firstName=?, lastName=?, address=?, phone=?, age=? WHERE email=?";
     private static StudentController instance = null;
 
     public static StudentController getInstance() {
@@ -99,7 +99,7 @@ public class StudentController implements StudentDao {
                 .setStudentPhone(request.getParameter("phone"))
                 .setStudentAge(Integer.parseInt(request.getParameter("age")));
         try(Connection connection = DBDriver.getInstance().getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE students SET firstName=?, lastName=?, address=?, phone=?, age=? WHERE email=?");
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, student.getFirstName());
             preparedStatement.setString(2, student.getLastName());
             preparedStatement.setString(3, student.getAddress());
