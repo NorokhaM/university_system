@@ -49,6 +49,9 @@
             <a class="btn btn-primary" href="teacher.jsp">Back</a>
         </div>
         <div class="text-center">
+            <a class="btn btn-info" href="update-teacher.jsp">Update profile</a>
+        </div>
+        <div class="text-center">
             <a class="btn btn-danger" href="logout">Logout</a>
         </div>
     </form>

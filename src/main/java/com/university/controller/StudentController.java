@@ -89,5 +89,28 @@ public class StudentController implements StudentDao {
         }
         return false;
     }
+
+    @Override
+    public void updateStudent(HttpServletRequest request) {
+        Student student = Student.getInstance();
+        student.setStudentFirstName(request.getParameter("firstName"))
+                .setStudentLastName(request.getParameter("lastName"))
+                .setStudentAddress(request.getParameter("address"))
+                .setStudentPhone(request.getParameter("phone"))
+                .setStudentAge(Integer.parseInt(request.getParameter("age")));
+        try(Connection connection = DBDriver.getInstance().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE students SET firstName=?, lastName=?, address=?, phone=?, age=? WHERE email=?");
+            preparedStatement.setString(1, student.getFirstName());
+            preparedStatement.setString(2, student.getLastName());
+            preparedStatement.setString(3, student.getAddress());
+            preparedStatement.setString(4, student.getPhone());
+            preparedStatement.setInt(5, student.getAge());
+            preparedStatement.setString(6, request.getSession().getAttribute("email").toString());
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
 

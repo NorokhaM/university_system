@@ -11,7 +11,5 @@ public interface StudentDao {
     void addStudent(HttpServletRequest request);
     List<Student> getStudentByEmail(HttpServletRequest request);
     boolean checkStudent(HttpServletRequest request);
-//    void removeStudent();
-//    void updateStudent(Student student);
-//    Student getStudentByName(String name);
+    void updateStudent(HttpServletRequest request);
 }

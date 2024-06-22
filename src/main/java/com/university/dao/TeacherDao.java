@@ -9,6 +9,7 @@ public interface TeacherDao {
     void addTeacher(HttpServletRequest request);
     boolean checkTeacher(HttpServletRequest request);
     List<Teacher> getTeacherByEmail(HttpServletRequest request);
+    void updateTeacher(HttpServletRequest request);
 //    void removeTeacher();
 //    void updateTeacher();
 //    void getTeacherByName();

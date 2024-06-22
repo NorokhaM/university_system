@@ -17,7 +17,7 @@
 </head>
 <%
     StudentController controller=StudentController.getInstance();
-    List<Student> students = controller.getStudentByName(request);
+    List<Student> students = controller.getStudentByEmail(request);
     request.setAttribute("students", students);
 %>
 
@@ -44,6 +44,9 @@
         </div>
         <div class="text-center">
             <a class="btn btn-primary" href="student.jsp">Back</a>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-info" href="update-student.jsp">Update profile</a>
         </div>
         <div class="text-center">
             <a class="btn btn-danger" href="logout">Logout</a>
