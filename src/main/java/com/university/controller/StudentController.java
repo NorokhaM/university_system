@@ -28,7 +28,7 @@ public class StudentController implements StudentDao {
     }
     @Override
     public void addStudent(HttpServletRequest request) {
-        Student student= Student.getInstance();
+        Student student= new Student();
         student.setStudentAge(Integer.parseInt(request.getParameter("age")))
                 .setStudentEmail(request.getParameter("email"))
                 .setStudentFirstName(request.getParameter("firstName"))
@@ -58,7 +58,7 @@ public class StudentController implements StudentDao {
             preparedStatement.setString(1, session.getAttribute("email").toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Student student = Student.getInstance();
+                Student student = new Student();
                 student.setStudentFirstName(resultSet.getString("firstName"))
                         .setStudentLastName(resultSet.getString("lastName"))
                         .setStudentAddress(resultSet.getString("address"))
@@ -92,7 +92,7 @@ public class StudentController implements StudentDao {
 
     @Override
     public void updateStudent(HttpServletRequest request) {
-        Student student = Student.getInstance();
+        Student student = new Student();
         student.setStudentFirstName(request.getParameter("firstName"))
                 .setStudentLastName(request.getParameter("lastName"))
                 .setStudentAddress(request.getParameter("address"))

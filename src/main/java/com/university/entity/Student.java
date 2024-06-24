@@ -10,22 +10,11 @@ public class Student {
     private String address;
     private int age;
     private List<String> listOfSubjects;
-    private static Student instance = null;
 
-    private Student() {
+    public Student() {
         this.listOfSubjects = new ArrayList<>();
     }
 
-    public static Student getInstance() {
-        if (instance == null) {
-            synchronized (Student.class) {
-                if (instance == null) {
-                    instance = new Student();
-                }
-            }
-        }
-        return instance;
-    }
 
 
     public Student setStudentFirstName(String firstName) {

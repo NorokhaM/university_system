@@ -1,10 +1,13 @@
 package com.university.entity;
 
+import com.university.model.SubjectModel;
+
 public class Subject {
 
     private String name;
     private String description;
-
+    private String firstNameTeacher;
+    private String lastNameTeacher;
 
     private static Subject instance = null;
 
@@ -29,11 +32,29 @@ public class Subject {
         return this;
     }
 
+    public Subject setSubjectTeacherFirstName(String firstNameTeacher) {
+        this.firstNameTeacher=firstNameTeacher;
+        return this;
+    }
+
+    public Subject setSubjectTeacherLastName(String lastNameTeacher) {
+        this.lastNameTeacher=lastNameTeacher;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public String getFirstNameTeacher(){
+        return firstNameTeacher;
+    }
+
+    public String getLastNameTeacher(){
+        return lastNameTeacher;
     }
 }

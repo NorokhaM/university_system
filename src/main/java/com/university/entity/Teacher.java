@@ -11,6 +11,9 @@ public class Teacher {
     private int subjectId;
     private static Teacher instance = null;
 
+    private Teacher() {
+    }
+
     public static Teacher getInstance(){
         if (instance == null) {
             synchronized (Teacher.class) {

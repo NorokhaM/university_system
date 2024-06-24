@@ -1,7 +1,9 @@
 package com.university.dao;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.university.entity.Subject;
+
+import java.util.List;
 
 public interface SubjectDao {
-    void updateTeacherSubject(HttpServletRequest request);
+    List<Subject> getAllSubjects();
 }

@@ -17,7 +17,6 @@ public class UpdateProfileController extends HttpServlet {
         String role = request.getSession().getAttribute("role").toString();
         if (role.equals("Teacher")) {
             TeacherController.getInstance().updateTeacher(request);
-            SubjectModel.getInstance().updateTeacherSubject(request);
             response.sendRedirect("profile");
         }
         if (role.equals("Student")) {
