@@ -1,5 +1,6 @@
 package com.university.controller;
 
+import com.university.model.SubjectModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ public class UpdateProfileController extends HttpServlet {
         String role = request.getSession().getAttribute("role").toString();
         if (role.equals("Teacher")) {
             TeacherController.getInstance().updateTeacher(request);
+            SubjectModel.getInstance().updateTeacherSubject(request);
             response.sendRedirect("profile");
         }
         if (role.equals("Student")) {

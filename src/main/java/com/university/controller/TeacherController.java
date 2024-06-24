@@ -14,7 +14,9 @@ import java.util.List;
 public class TeacherController implements TeacherDao {
     private static final String INSERT_QUERY = "INSERT INTO teachers (firstName, lastName, address, email, phone, age, subject) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM teachers WHERE email = ?";
-    private static final String UPDATE_QUERY = "UPDATE teachers SET firstName = ?, lastName = ?, address = ?, phone = ?, subject = ?, age = ? WHERE email = ?";
+    private static final String UPDATE_QUERY = "UPDATE teachers SET firstName = ?, lastName = ?, address = ?, phone = ?, subject = ?, age = ?, subject_id = ? WHERE email = ?";
+    private static final String SELECT_SUBJECT_QUERY = "SELECT id FROM subjects WHERE name = ?";
+
     private static TeacherController instance = null;
 
     public static TeacherController getInstance() {
@@ -102,15 +104,14 @@ public class TeacherController implements TeacherDao {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String subject = request.getParameter("subject");
-
+        int subjectId = findSubjectId(subject);
+        request.getSession().setAttribute("subjectId", subjectId);
         Teacher teacher = Teacher.getInstance();
-
-        setTeacherAttributes(teacher, firstName, lastName, phone, age, address, subject);
-
+        setTeacherAttributes(teacher, firstName, lastName, phone, age, address, subject, subjectId);
         updateTeacherInDatabase(teacher, request);
     }
 
-    private void setTeacherAttributes(Teacher teacher, String firstName, String lastName, String phone, int age, String address, String subject) {
+    private void setTeacherAttributes(Teacher teacher, String firstName, String lastName, String phone, int age, String address, String subject, int subjectId) {
         if (!firstName.isEmpty()) {
             teacher.setTeacherFirstName(firstName);
         }
@@ -129,6 +130,9 @@ public class TeacherController implements TeacherDao {
         if (age != 0) {
             teacher.setTeacherAge(age);
         }
+        if (subjectId != 0) {
+            teacher.setSubjectId(subjectId);
+        }
     }
 
     private void updateTeacherInDatabase(Teacher teacher, HttpServletRequest request) {
@@ -140,10 +144,26 @@ public class TeacherController implements TeacherDao {
             preparedStatement.setString(4, teacher.getPhone());
             preparedStatement.setString(5, teacher.getSubject());
             preparedStatement.setInt(6, teacher.getAge());
-            preparedStatement.setString(7,  request.getSession().getAttribute("email").toString());
+            preparedStatement.setInt(7, teacher.getSubjectId());
+            preparedStatement.setString(8, request.getSession().getAttribute("email").toString());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private int findSubjectId(String subject) {
+        int subjectId = 0;
+        try (Connection connection = DBDriver.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SUBJECT_QUERY);
+            preparedStatement.setString(1, subject);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                subjectId = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subjectId;
     }
 }

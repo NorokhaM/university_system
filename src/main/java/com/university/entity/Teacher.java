@@ -8,6 +8,7 @@ public class Teacher {
     private String phone;
     private int age;
     private String subject;
+    private int subjectId;
     private static Teacher instance = null;
 
     public static Teacher getInstance(){
@@ -56,6 +57,11 @@ public class Teacher {
         return this;
     }
 
+    public Teacher setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
+        return this;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -82,6 +88,10 @@ public class Teacher {
 
     public String getAddress() {
         return address;
+    }
+
+    public int getSubjectId() {
+        return subjectId;
     }
 
 
