@@ -166,4 +166,20 @@ public class TeacherController implements TeacherDao {
         }
         return subjectId;
     }
+
+    @Override
+    public int getTeachersSubjectIdByEmail(String email) {
+        int subjectId = 0;
+        try (Connection connection = DBDriver.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                subjectId = resultSet.getInt("subject_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subjectId;
+    }
 }
