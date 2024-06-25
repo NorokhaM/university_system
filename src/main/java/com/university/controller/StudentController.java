@@ -3,6 +3,7 @@ package com.university.controller;
 import com.university.dao.StudentDao;
 import com.university.db.DBDriver;
 import com.university.entity.Student;
+import com.university.entity.Subject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -14,6 +15,8 @@ public class StudentController implements StudentDao {
     private static final String INSERT_QUERY = "INSERT INTO students (firstName, lastName, address, email, age, phone) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM students WHERE email=?";
     private static final String UPDATE_QUERY= "UPDATE students SET firstName=?, lastName=?, address=?, phone=?, age=? WHERE email=?";
+    private static final String SELECT_TEACHER_SUBJECTS_QUERY = "SELECT students.firstname, students.lastname, students.phone, students.address FROM students JOIN student_subjects ON students.id=student_subjects.student_id JOIN teachers ON teachers.subject_id=student_subjects.subject_id WHERE teachers.subject_id=?";
+
     private static StudentController instance = null;
 
     public static StudentController getInstance() {
@@ -127,6 +130,27 @@ public class StudentController implements StudentDao {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public List<Student> getStudentsByTeacherEmail(String email) {
+        List<Student> students=new ArrayList<>();
+        try (Connection conn=DBDriver.getInstance().getConnection()){
+            PreparedStatement ps=conn.prepareStatement(SELECT_TEACHER_SUBJECTS_QUERY);
+            ps.setInt(1, TeacherController.getInstance().getTeachersSubjectIdByEmail(email));
+            ResultSet rs=ps.executeQuery();
+            while (rs.next()){
+                Student student=new Student();
+                student.setStudentFirstName(rs.getString("firstname"));
+                student.setStudentLastName(rs.getString("lastname"));
+                student.setStudentPhone(rs.getString("phone"));
+                student.setStudentAddress(rs.getString("address"));
+                students.add(student);
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return students;
     }
 }
 

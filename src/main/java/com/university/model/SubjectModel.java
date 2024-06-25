@@ -1,8 +1,10 @@
 package com.university.model;
 
 import com.university.controller.StudentController;
+import com.university.controller.TeacherController;
 import com.university.dao.SubjectDao;
 import com.university.db.DBDriver;
+import com.university.entity.Student;
 import com.university.entity.Subject;
 
 import java.sql.Connection;
@@ -18,6 +20,8 @@ public class SubjectModel implements SubjectDao {
     private static final String SELECT_SUBJECT_QUERY = "SELECT subjects.name, subjects.description, teachers.firstname, teachers.lastname FROM subjects JOIN teachers ON subjects.id=teachers.subject_id";
     private static final String SELECT_SUBJECT_ID_QUERY = "SELECT student_id, subject_id FROM student_subjects WHERE student_id=? AND subject_id=?";
     private static final String SELECT_SUBJECT_NAME_QUERY = "SELECT id FROM subjects WHERE name=?";
+    private static final String SELECT_STUDENT_SUBJECTS_QUERY = "SELECT subjects.name, subjects.description, teachers.firstname, teachers.lastname FROM subjects JOIN teachers ON subjects.id=teachers.subject_id JOIN student_subjects ON subjects.id=student_subjects.subject_id WHERE student_subjects.student_id=?";
+
 
     private static SubjectModel instance = null;
 
@@ -86,4 +90,24 @@ public class SubjectModel implements SubjectDao {
         return false;
     }
 
+    @Override
+    public List<Subject> getSubjectByStudentEmail(String email) {
+        List<Subject> subjects=new ArrayList<>();
+        try (Connection conn=DBDriver.getInstance().getConnection()){
+            PreparedStatement ps=conn.prepareStatement(SELECT_STUDENT_SUBJECTS_QUERY);
+            ps.setInt(1, StudentController.getInstance().getStudentIdByEmail(email));
+            ResultSet rs=ps.executeQuery();
+            while (rs.next()){
+                Subject subject=new Subject();
+                subject.setSubjectName(rs.getString("name"));
+                subject.setSubjectDescription(rs.getString("description"));
+                subject.setSubjectTeacherFirstName(rs.getString("firstname"));
+                subject.setSubjectTeacherLastName(rs.getString("lastname"));
+                subjects.add(subject);
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return subjects;
+    }
 }
