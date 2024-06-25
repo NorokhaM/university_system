@@ -13,11 +13,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <%
     SubjectModel model=SubjectModel.getInstance();
     List<Subject> subjects = model.getAllSubjects();
     request.setAttribute("subjects", subjects);
+    request.setAttribute("message", session.getAttribute("message"));
 %>
 
 <body>
@@ -45,11 +47,21 @@
                     <td class="fs-6">${subject.description}</td>
                     <td class="fs-6">${teacherName}</td>
                     <td>
-                        <a class="btn btn-primary" href="subjectSign">Sign up</a>
+                        <a href="subject-sign-up?subjectName=${subject.name}"><i class="bi bi-check-square"></i></a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
+        <c:if test="${not empty message}">
+            <div class="alert alert-danger" role="alert">
+                <c:out value="${message}"/>
+                <%
+                    session.removeAttribute("message");
+                    request.removeAttribute("message");
+                %>
+            </div>
+        </c:if>
         <div class="text-center">
             <a class="btn btn-primary" href="student.jsp">Back</a>
         </div>

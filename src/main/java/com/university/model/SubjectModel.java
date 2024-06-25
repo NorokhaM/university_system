@@ -1,5 +1,6 @@
 package com.university.model;
 
+import com.university.controller.StudentController;
 import com.university.dao.SubjectDao;
 import com.university.db.DBDriver;
 import com.university.entity.Subject;
@@ -15,6 +16,9 @@ public class SubjectModel implements SubjectDao {
 
 
     private static final String SELECT_SUBJECT_QUERY = "SELECT subjects.name, subjects.description, teachers.firstname, teachers.lastname FROM subjects JOIN teachers ON subjects.id=teachers.subject_id";
+    private static final String SELECT_SUBJECT_ID_QUERY = "SELECT student_id, subject_id FROM student_subjects WHERE student_id=? AND subject_id=?";
+    private static final String SELECT_SUBJECT_NAME_QUERY = "SELECT id FROM subjects WHERE name=?";
+
     private static SubjectModel instance = null;
 
     private SubjectModel() {
@@ -49,6 +53,37 @@ public class SubjectModel implements SubjectDao {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public int getSubjectIdByName(String subjectName) {
+        try (Connection conn=DBDriver.getInstance().getConnection()){
+            PreparedStatement ps=conn.prepareStatement(SELECT_SUBJECT_NAME_QUERY);
+            ps.setString(1, subjectName);
+            ResultSet rs=ps.executeQuery();
+            if (rs.next()){
+                return rs.getInt("id");
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean isRegistered(String email, String subjectName) {
+        try (Connection conn=DBDriver.getInstance().getConnection()){
+            PreparedStatement ps=conn.prepareStatement(SELECT_SUBJECT_ID_QUERY);
+            ps.setInt(1, StudentController.getInstance().getStudentIdByEmail(email));
+            ps.setInt(2, getSubjectIdByName(subjectName));
+            ResultSet rs=ps.executeQuery();
+            if (rs.next()){
+                return true;
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

@@ -28,10 +28,10 @@
                         <a class="nav-link mx-lg-2 active" aria-current="page" href="student.jsp">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mx-lg-2" aria-current="page" href="teachers.jsp">Teachers</a>
+                        <a class="nav-link mx-lg-2" aria-current="page" href="subjects.jsp">Subjects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mx-lg-2" aria-current="page" href="subjects.jsp">Subjects</a>
+                        <a class="nav-link mx-lg-2" aria-current="page" href="student-subjects.jsp">My subjects</a>
                     </li>
                 </ul>
             </div>

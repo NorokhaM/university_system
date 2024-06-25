@@ -112,5 +112,21 @@ public class StudentController implements StudentDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public int getStudentIdByEmail(String email) {
+        try(Connection connection = DBDriver.getInstance().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt("id");
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
 
