@@ -15,7 +15,7 @@ public class StudentController implements StudentDao {
     private static final String INSERT_QUERY = "INSERT INTO students (firstName, lastName, address, email, age, phone) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM students WHERE email=?";
     private static final String UPDATE_QUERY= "UPDATE students SET firstName=?, lastName=?, address=?, phone=?, age=? WHERE email=?";
-    private static final String SELECT_TEACHER_SUBJECTS_QUERY = "SELECT students.firstname, students.lastname, students.phone, students.address FROM students JOIN student_subjects ON students.id=student_subjects.student_id JOIN teachers ON teachers.subject_id=student_subjects.subject_id WHERE teachers.subject_id=?";
+    private static final String SELECT_TEACHER_SUBJECTS_QUERY = "SELECT students.firstname, students.lastname, students.phone, students.address, students.email FROM students JOIN student_subjects ON students.id=student_subjects.student_id JOIN teachers ON teachers.subject_id=student_subjects.subject_id WHERE teachers.subject_id=?";
 
     private static StudentController instance = null;
 
@@ -145,6 +145,7 @@ public class StudentController implements StudentDao {
                 student.setStudentLastName(rs.getString("lastname"));
                 student.setStudentPhone(rs.getString("phone"));
                 student.setStudentAddress(rs.getString("address"));
+                student.setStudentEmail(rs.getString("email"));
                 students.add(student);
             }
         } catch(SQLException e){

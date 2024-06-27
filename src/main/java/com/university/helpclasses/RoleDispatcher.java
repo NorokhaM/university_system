@@ -6,6 +6,9 @@ public class RoleDispatcher implements RoleDao {
 
     private static RoleDispatcher instance;
 
+    private RoleDispatcher(){
+    }
+
     public static RoleDispatcher getInstance(){
         if(instance == null){
             instance = new RoleDispatcher();
@@ -14,9 +17,6 @@ public class RoleDispatcher implements RoleDao {
     }
     @Override
     public String getRole(String role){
-
-
-
         switch(role){
             case "admin":
                 return "admin.jsp";

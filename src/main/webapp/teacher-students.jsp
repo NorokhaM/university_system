@@ -19,8 +19,10 @@
     StudentController studentController = new StudentController();
     List<Student> students = studentController.getStudentsByTeacherEmail(session.getAttribute("email").toString());
     request.setAttribute("students", students);
+    request.setAttribute("studentEmail", students.get(0).getEmail());
 %>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <body>
 <section class="hero-section"></section>
 <div class="container">
@@ -32,7 +34,7 @@
                 <th scope="col" class="fs-6">Student</th>
                 <th scope="col" class="fs-6">Phone</th>
                 <th scope="col" class="fs-6">Address</th>
-                <th scope="col" class="fs-6">Mark</th>
+                <th scope="col" class="fs-6">Set mark</th>
             </tr>
             </thead>
             <tbody>
@@ -45,14 +47,50 @@
                     <td class="fs-6">${studentName}</td>
                     <td class="fs-6">${students.phone}</td>
                     <td class="fs-6">${students.address}</td>
+                    <td class="fs-6">
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="bi bi-arrow-right-square"></i>
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
+        <c:if test="${not empty sessionScope.error}">
+            <div class="alert alert-danger" role="alert">
+                <c:out value="${sessionScope.error}"/>
+                <%
+                    session.removeAttribute("error");
+                %>
+            </div>
+        </c:if>
         <div class="text-center">
             <a class="btn btn-primary" href="teacher.jsp">Back</a>
         </div>
     </form>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Set mark</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="set-mark" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="mark" class="form-label">Enter your mark (1-10)</label>
+                        <input type="number" class="form-control" id="mark" name="mark">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" name="email" value="${studentEmail}">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

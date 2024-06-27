@@ -45,6 +45,7 @@
                     <td class="fs-6">${subject.name}</td>
                     <td class="fs-6">${subject.description}</td>
                     <td class="fs-6">${teacherName}</td>
+                    <td class="fs-6">${subject.mark}</td>
                 </tr>
             </c:forEach>
             </tbody>

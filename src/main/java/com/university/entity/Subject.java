@@ -8,19 +8,7 @@ public class Subject {
     private String description;
     private String firstNameTeacher;
     private String lastNameTeacher;
-
-    private static Subject instance = null;
-
-    public static Subject getInstance(){
-        if (instance == null) {
-            synchronized (Subject.class) {
-                if (instance == null) {
-                    instance = new Subject();
-                }
-            }
-        }
-        return instance;
-    }
+    private int mark;
 
     public Subject setSubjectName(String name) {
         this.name = name;
@@ -42,6 +30,11 @@ public class Subject {
         return this;
     }
 
+    public Subject setMark(int mark) {
+        this.mark = mark;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -57,4 +50,9 @@ public class Subject {
     public String getLastNameTeacher(){
         return lastNameTeacher;
     }
+
+    public int getMark() {
+        return mark;
+    }
+
 }

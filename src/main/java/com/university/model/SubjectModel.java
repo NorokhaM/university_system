@@ -20,7 +20,7 @@ public class SubjectModel implements SubjectDao {
     private static final String SELECT_SUBJECT_QUERY = "SELECT subjects.name, subjects.description, teachers.firstname, teachers.lastname FROM subjects JOIN teachers ON subjects.id=teachers.subject_id";
     private static final String SELECT_SUBJECT_ID_QUERY = "SELECT student_id, subject_id FROM student_subjects WHERE student_id=? AND subject_id=?";
     private static final String SELECT_SUBJECT_NAME_QUERY = "SELECT id FROM subjects WHERE name=?";
-    private static final String SELECT_STUDENT_SUBJECTS_QUERY = "SELECT subjects.name, subjects.description, teachers.firstname, teachers.lastname FROM subjects JOIN teachers ON subjects.id=teachers.subject_id JOIN student_subjects ON subjects.id=student_subjects.subject_id WHERE student_subjects.student_id=?";
+    private static final String SELECT_STUDENT_SUBJECTS_QUERY = "SELECT subjects.name, subjects.description, teachers.firstname, teachers.lastname, student_subjects.mark FROM subjects JOIN teachers ON subjects.id=teachers.subject_id JOIN student_subjects ON subjects.id=student_subjects.subject_id WHERE student_subjects.student_id=?";
 
 
     private static SubjectModel instance = null;
@@ -103,6 +103,7 @@ public class SubjectModel implements SubjectDao {
                 subject.setSubjectDescription(rs.getString("description"));
                 subject.setSubjectTeacherFirstName(rs.getString("firstname"));
                 subject.setSubjectTeacherLastName(rs.getString("lastname"));
+                subject.setMark(rs.getInt("mark"));
                 subjects.add(subject);
             }
         } catch(SQLException e){

@@ -9,4 +9,5 @@ public interface SubjectDao {
     List<Subject> getSubjectByStudentEmail(String email);
     int getSubjectIdByName(String subjectName);
     boolean isRegistered(String email, String subjectName);
+//    void setSubjectMark(String email, String subjectName, int mark);
 }
